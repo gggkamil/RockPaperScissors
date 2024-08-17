@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
+import './App.css'; 
 
 const App: React.FC = () => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
@@ -32,11 +33,9 @@ const App: React.FC = () => {
 
     newConnection.on("ReceiveResult", (opponentMove: 'Rock' | 'Paper' | 'Scissors', result: 'Win' | 'Lose' | 'Draw') => {
       let message = `Your opponent chose ${opponentMove}. You ${result}!`;
-      
-      // Display result message for the player
       setResultMessage(message);
-      setLastPlayerMove(null); // Reset player's move after receiving result
-      setMoveDisabled(true); // Disable further moves
+      setLastPlayerMove(null);
+      setMoveDisabled(true);
     });
 
     const startConnection = async () => {
@@ -72,11 +71,11 @@ const App: React.FC = () => {
     if (!moveDisabled && lastPlayerMove === null) {
       setLastPlayerMove(move);
       setResultMessage(`You selected ${move}. Waiting for opponent's move...`);
-      
+
       if (connection) {
         try {
           await connection.send('SendMove', move);
-          setMoveDisabled(true); // Prevent multiple moves until result is received
+          setMoveDisabled(true);
         } catch (e) {
           console.error('Error sending move: ', e);
         }
@@ -85,32 +84,39 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
+    <div className="app-container">
       <h3>Rock-Paper-Scissors Game</h3>
       {!opponentName && !isWaiting && (
-        <>
+        <div className="join-section">
           <input
+            className="input-field"
             value={playerName}
             onChange={e => setPlayerName(e.target.value)}
             placeholder="Enter your name"
           />
-          <button onClick={joinGame}>Join Game</button>
-        </>
+          <button className="join-button" onClick={joinGame}>Join Game</button>
+        </div>
       )}
-      {isWaiting && <p>Waiting for an opponent...</p>}
+      {isWaiting && (
+        <div className="spinner-container">
+          <div className="spinner"></div>
+          <p>Waiting for an opponent...</p>
+        </div>
+      )}
       {opponentName && (
-        <>
+        <div className="game-section">
           <p>You are playing against {opponentName}.</p>
           <p>Select your move:</p>
-          <button onClick={() => makeMove("Rock")} disabled={moveDisabled}>Rock</button>
-          <button onClick={() => makeMove("Paper")} disabled={moveDisabled}>Paper</button>
-          <button onClick={() => makeMove("Scissors")} disabled={moveDisabled}>Scissors</button>
-          
+          <div className="button-group">
+            <button className="move-button" onClick={() => makeMove("Rock")} disabled={moveDisabled}>Rock</button>
+            <button className="move-button" onClick={() => makeMove("Paper")} disabled={moveDisabled}>Paper</button>
+            <button className="move-button" onClick={() => makeMove("Scissors")} disabled={moveDisabled}>Scissors</button>
+          </div>
           <p>{resultMessage}</p>
           {moveDisabled && resultMessage && (
-            <button onClick={joinGame}>Play Again</button>
+            <button className="play-again-button" onClick={joinGame}>Play Again</button>
           )}
-        </>
+        </div>
       )}
     </div>
   );
