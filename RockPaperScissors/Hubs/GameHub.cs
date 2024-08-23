@@ -52,12 +52,11 @@ namespace RockPaperScissorsAPI.Hubs
                 var result1 = GameLogic.GetResult(player1Move, player2Move);
                 var result2 = GameLogic.GetResult(player2Move, player1Move);
 
-                // Notify each player with their result
+                
                 await Clients.Client(player1Id).SendAsync("ReceiveResult", player2Move.ToString(), result1.ToString());
                 await Clients.Client(player2Id).SendAsync("ReceiveResult", player1Move.ToString(), result2.ToString());
 
-                PlayerMoves.Clear(); // Clear the moves for the next round
-                // Optionally re-enable the queue for new players
+                PlayerMoves.Clear(); 
             }
         }
 
