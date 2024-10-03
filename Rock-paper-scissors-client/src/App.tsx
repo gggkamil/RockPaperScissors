@@ -13,7 +13,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5096/gamehub", {
+      .withUrl("https://rockpaperscissors-kamil-ang8d2a5fjh8fufn.polandcentral-01.azurewebsites.net/gamehub", {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })

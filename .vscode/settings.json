@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a87a02ed-8895-4081-be07-9827a7c641b2/resourceGroups/RockPaperScissors-Kamil_group/providers/Microsoft.Web/sites/RockPaperScissors-Kamil",
+    "appService.deploySubpath": "RockPaperScissors\\bin\\Publish"
+}
